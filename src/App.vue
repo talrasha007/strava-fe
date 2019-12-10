@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <ul>
+      <li v-for="r in routes" :key="r.id">
+        <a target="_blank" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">{{r.name}}</a>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -9,6 +14,7 @@ const axios = require('axios');
 
 export default {
   name: 'app',
+
   async beforeMount() {
     let profile = JSON.parse(localStorage.getItem('strava') || 'null');
     const query = qs.parse(location.search);
@@ -20,10 +26,23 @@ export default {
     }
 
     if (!profile || profile.expires_at < Date.now() / 1000) {
-      location.href = `http://www.strava.com/oauth/authorize?client_id=41160&response_type=code&redirect_uri=${location.href}&approval_prompt=force&scope=read`;
+      location.href = `http://www.strava.com/oauth/authorize?client_id=41160&response_type=code&redirect_uri=${location.href}&approval_prompt=force&scope=read,activity:read`;
     }
+
+    this.$data.profile = profile;
+
+    const { data } = await axios.get(
+      'https://www.strava.com/api/v3/athlete/activities',
+      { headers: { Authorization: profile.token_type + ' ' + profile.access_token } }
+    );
+    this.$data.routes = data;
   },
-  components: {
+
+  data() {
+    return {
+      routes: [],
+      profile: {}
+    }
   }
 }
 </script>
