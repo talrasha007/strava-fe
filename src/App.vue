@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <ul>
-      <li v-for="r in routes" :key="r.id">
-        <a target="_blank" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">{{r.name}}</a>
+      <li v-for="r in activities" :key="r.id">
+        <a :download="`${r.name}.gpx`" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">{{r.name}}</a>
       </li>
     </ul>
   </div>
@@ -29,19 +29,16 @@ export default {
       location.href = `http://www.strava.com/oauth/authorize?client_id=41160&response_type=code&redirect_uri=${location.href}&approval_prompt=force&scope=read,activity:read`;
     }
 
-    this.$data.profile = profile;
-
     const { data } = await axios.get(
       'https://www.strava.com/api/v3/athlete/activities',
       { headers: { Authorization: profile.token_type + ' ' + profile.access_token } }
     );
-    this.$data.routes = data;
+    this.$data.activities = data;
   },
 
   data() {
     return {
-      routes: [],
-      profile: {}
+      activities: []
     }
   }
 }
