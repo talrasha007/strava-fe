@@ -4,7 +4,7 @@
       <div class="brand">Activities</div>
     </div>
     <div class="content">
-      <h3>{{activities.length}} Activities</h3>
+      <h3>{{activities.length}} Activities <span class="loading" v-if="isLoading">Loading...</span></h3>
       <table class="data">
         <thead>
           <tr>
@@ -47,15 +47,26 @@ export default {
       location.href = `http://www.strava.com/oauth/authorize?client_id=41160&response_type=code&redirect_uri=${location.href}&approval_prompt=force&scope=read,activity:read`;
     }
 
-    const { data } = await axios.get(
-      'https://www.strava.com/api/v3/athlete/activities',
-      { params: { per_page: 200 }, headers: { Authorization: profile.token_type + ' ' + profile.access_token } }
-    );
-    this.$data.activities = data;
+    const per_page = 200;
+    for (let page = 1; page <= 10; page++) {
+      const { data } = await axios.get(
+        'https://www.strava.com/api/v3/athlete/activities',
+        { params: { page, per_page }, headers: { Authorization: profile.token_type + ' ' + profile.access_token } }
+      );
+
+      if (data.length > 0) {
+        this.$data.activities = this.$data.activities.concat(data);
+      }
+
+      if (data.length < per_page) break;
+    }
+
+    this.isLoading = false;
   },
 
   data() {
     return {
+      isLoading: true,
       activities: []
     }
   }
@@ -71,6 +82,12 @@ html, body {
 .banner {
   height: 55px;
   line-height: 55px;
+}
+
+.loading {
+  margin-left: 20px;
+  font-size: 13px;
+  color: #777777;
 }
 
 .brand {
