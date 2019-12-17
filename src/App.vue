@@ -1,10 +1,16 @@
 <template>
   <div id="app">
-    <ul>
-      <li v-for="r in activities" :key="r.id">
-        <a :download="`${r.name}.gpx`" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">{{r.name}}</a>
-      </li>
-    </ul>
+    <div class="banner">
+      <div class="brand">Activities</div>
+    </div>
+    <div class="content">
+      <h3>{{activities.length}} Activities</h3>
+      <ul>
+        <li v-for="r in activities" :key="r.id">
+          <a :download="`${r.name}.gpx`" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">{{r.name}}</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -45,12 +51,27 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.banner {
+  height: 55px;
+  line-height: 55px;
+}
+
+.brand {
+  margin-left: 30px;
+  height: 55px;
+  line-height: 55px;
+  font-size: 28px;
+  color: #242428;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.025);
+  border-bottom: 1px solid rgb(240, 240, 245);
+}
+
+.content {
+  padding: 30px;
 }
 </style>
