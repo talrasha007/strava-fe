@@ -38,7 +38,7 @@ export default {
     const query = qs.parse(location.search);
 
     if (query.code && (!profile || profile.code !== query.code)) {
-      const { data } = await axios.get('/strava/oauth/get_token', { params: query });
+      const { data } = await axios.get('https://api.i43.io/strava/oauth/get_token', { params: query });
       profile = data;
       localStorage.setItem('strava', JSON.stringify(profile));
     }
@@ -49,7 +49,7 @@ export default {
 
     const { data } = await axios.get(
       'https://www.strava.com/api/v3/athlete/activities',
-      { headers: { Authorization: profile.token_type + ' ' + profile.access_token } }
+      { params: { per_page: 200 }, headers: { Authorization: profile.token_type + ' ' + profile.access_token } }
     );
     this.$data.activities = data;
   },
