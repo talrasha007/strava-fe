@@ -5,11 +5,23 @@
     </div>
     <div class="content">
       <h3>{{activities.length}} Activities</h3>
-      <ul>
-        <li v-for="r in activities" :key="r.id">
-          <a :download="`${r.name}.gpx`" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">{{r.name}}</a>
-        </li>
-      </ul>
+      <table class="data">
+        <thead>
+          <tr>
+            <th>Type</th><th>Date</th><th>Title</th><th>Time</th><th>Distance</th><th/>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="r in activities" :key="r.id">
+            <td>{{r.type}}</td>
+            <td>{{r.start_date}}</td>
+            <td>{{r.name}}</td>
+            <td>{{r.moving_time}}</td>
+            <td>{{r.distance}}</td>
+            <td><a :download="`${r.name}.gpx`" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">download</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -73,5 +85,18 @@ html, body {
 
 .content {
   padding: 30px;
+}
+
+.data {
+  width: 100%;
+}
+
+th {
+  background-color: #f0f0f5;
+  padding: 5px;
+}
+
+td {
+  text-align: center;
 }
 </style>

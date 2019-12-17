@@ -11,7 +11,7 @@
     "devServer": {
       "proxy": {
         "^/strava": {
-          "target": "http://localhost:3000"
+          "target": "http://api.i43.io"
         }
       }
     }
