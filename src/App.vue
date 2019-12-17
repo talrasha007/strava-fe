@@ -48,7 +48,7 @@ export default {
     }
 
     const per_page = 200;
-    for (let page = 1; page <= 10; page++) {
+    for (let page = 1; page <= 5; page++) {
       const { data } = await axios.get(
         'https://www.strava.com/api/v3/athlete/activities',
         { params: { page, per_page }, headers: { Authorization: profile.token_type + ' ' + profile.access_token } }
