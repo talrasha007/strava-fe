@@ -18,7 +18,7 @@
             <td>{{r.name}}</td>
             <td>{{r.moving_time}}</td>
             <td>{{r.distance}}</td>
-            <td><a :download="`${r.name}.gpx`" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">download</a></td>
+            <td><a :title="r.name" :download="`${r.name}.gpx`" :href="`https://www.strava.com/activities/${r.id}/export_gpx`">download</a></td>
           </tr>
         </tbody>
       </table>
