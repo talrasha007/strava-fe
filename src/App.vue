@@ -35,10 +35,11 @@ export default {
 
   async beforeMount() {
     let profile = JSON.parse(localStorage.getItem('strava') || 'null');
-    const query = qs.parse(location.search);
+    const query = qs.parse(location.search.replace(/^\?/, ''));
 
     if (query.code && (!profile || profile.code !== query.code)) {
-      const { data } = await axios.get('https://api.i43.io/strava/oauth/get_token', { params: query });
+      // const { data } = await axios.get('https://api.i43.io/strava/oauth/get_token', { params: query });
+      const { data } = await axios.get('https://3jsdgpavmc.execute-api.us-east-1.amazonaws.com/strava/oauth/get_token', { params: query });
       profile = data;
       localStorage.setItem('strava', JSON.stringify(profile));
     }
